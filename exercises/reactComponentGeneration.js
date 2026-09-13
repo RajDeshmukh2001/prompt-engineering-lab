@@ -20,6 +20,13 @@ const SYSTEM_PROMPT = `You are a senior React developer
     - Tailwind for all styling — no inline styles, no CSS files
     - Components must be self-contained — no external dependencies beyond React and Tailwind
 
+    MULTI-TURN REQUIREMENTS:
+    - Treat follow-up requests as modifications to the previously generated component.
+    - Preserve all existing functionality unless explicitly asked to change or remove it.
+    - Return the complete updated component after every modification.
+    - Never replace existing code with placeholders, ellipses, or comments such as "...existing logic".
+    - Re-check previous requirements before generating each updated version.
+
     OUTPUT FORMAT:
     \`\`\`tsx
     <complete component code>
@@ -51,3 +58,41 @@ console.log("\nTURN 1: CREATE COMPONENT");
 console.log(response.text);
 
 previousInteractionId = response.interactionId;
+
+const secondResponse = await callModel({
+    user: `Add a loading skeleton state that shows while the user data loads.`,
+    system: SYSTEM_PROMPT,
+    previousInteractionId,
+    temperature: 0.2,
+    maxTokens: 1500
+});
+
+console.log("TURN 2: ADD LOADING STATE");
+console.log(secondResponse.text);
+
+previousInteractionId = secondResponse.interactionId;
+
+const thirdResponse = await callModel({
+    user: `Make the card clickable — the whole card should be a link, not just the button`,
+    system: SYSTEM_PROMPT,
+    previousInteractionId,
+    temperature: 0.2,
+    maxTokens: 1500,
+});
+
+console.log("TURN 3: MAKE CARD CLICKABLE");
+console.log(thirdResponse.text);
+
+previousInteractionId = thirdResponse.interactionId;
+
+const fourthResponse = await callModel({
+    user: `Add an onDelete callback prop that shows a confirmation before deleting.
+    Preserve all existing functionality and accessibility.`,
+    system: SYSTEM_PROMPT,
+    previousInteractionId,
+    temperature: 0.2,
+    maxTokens: 2000
+});
+
+console.log("TURN 4: ADD DELETE FUNCTIONALITY");
+console.log(fourthResponse.text);
