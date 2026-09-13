@@ -93,8 +93,46 @@ async function runLab() {
         console.log('REQUEST:', request);
         console.log('='.repeat(60));
         const result = await generateSQL(request);
-        console.log(result);
+        const sql = await extractSQL(result);
+        const validatedSQL = await validateSQL(sql);
+        if (!validatedSQL.safe) {
+            console.error('Validation failed:', validatedSQL.issues);
+        } else {
+            console.log(result);
+        }
     };
 };
+
+async function extractSQL(response) {
+    return response.split('EXPLANATION:')[0].trim();
+}
+
+function validateSQL(sql) {
+    const issues = [];
+
+    const forbiddenKeywords = [
+        /\bDROP\b/i,
+        /\bDELETE\b/i,
+        /\bTRUNCATE\b/i,
+        /\bUPDATE\b/i,
+        /\b"INSERT"\b/i,
+        /\b"ALTER"\b/i,
+        /\b"CREATE"\b/i,
+        /\b"GRANT"\b/i,
+        /\b"REVOKE"\b/i,
+        /\bSELECT\s+\*/i
+    ];
+
+    for (const keyword of forbiddenKeywords) {
+        if (keyword.test(sql)) {
+            issues.push(`Forbidden keyword detected: ${keyword}`);
+        }
+    }
+
+    return {
+        safe: issues.length === 0,
+        issues
+    };
+}
 
 runLab();
