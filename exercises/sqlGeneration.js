@@ -100,12 +100,12 @@ async function runLab() {
         console.log("REQUEST:", request);
         console.log("=".repeat(60));
         const result = await generateSQL(request);
-        const sql = await extractSQL(result);
+        const sql = await extractSQL(result.text);
         const validatedSQL = await validateSQL(sql);
         if (!validatedSQL.safe) {
             console.error("Validation failed:", validatedSQL.issues);
         } else {
-            console.log(result);
+            console.log(result.text);
         }
     };
 };

@@ -9,7 +9,7 @@ export async function main({ user, system = "", temperature = 0.7, maxTokens = 1
             maxTokens,
         });
 
-        console.log(response);
+        console.log(response.text);
 
     } catch (error) {
         console.error("Error:", error.message);
