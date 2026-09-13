@@ -26,6 +26,12 @@ const SYSTEM_PROMPT = `You are a senior Java developer specialising in Spring Bo
     Always handle null inputs.
     Use streams over loops.
 
+    WHEN REQUIREMENTS ARE AMBIGUOUS:
+    - Make reasonable assumptions based on standard Java and Spring Boot practices.
+    - Do not invent unnecessary requirements.
+    - Clearly state important assumptions or design decisions.
+    - Ask for clarification only when the missing information makes a correct implementation impossible.
+
     OUTPUT FORMAT:
     \`\`\`java
     // Brief comment explaining the approach
@@ -34,6 +40,7 @@ const SYSTEM_PROMPT = `You are a senior Java developer specialising in Spring Bo
 
     COMPLEXITY NOTE: <time and space complexity>
     EDGE CASES HANDLED: <list what you handled>
+    ASSUMPTIONS: <any assumptions you made, or "None">
 
     EXAMPLES OF THE STYLE I WANT:
     Example request: "Filter active users from a list"
@@ -73,4 +80,10 @@ main({
     User class: String id, String name, String email, LocalDateTime created_at, LocalDateTime updated_at (PrePersist with LocalDateTime.now()).`,
     system: SYSTEM_PROMPT,
     temperature: 0.6,
+});
+
+main({
+    user: `Write a Spring Boot @Service method that calls a repository and handles EntityNotFoundException`,
+    system: SYSTEM_PROMPT,
+    temperature: 0.8,
 });
