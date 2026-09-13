@@ -1,10 +1,12 @@
 import { callModel } from "./callModel.js";
 
-async function main() {
+export async function main({ user, system = "", temperature = 0.7, maxTokens = 1000 }) {
     try {
         const response = await callModel({
-            user: "Explain what prompt engineering is in two sentences.",
-            system: "You are a helpful assistant that provides clear and concise explanations."
+            user,
+            system,
+            temperature,
+            maxTokens,
         });
 
         console.log(response);
@@ -13,5 +15,3 @@ async function main() {
         console.error("Error:", error.message);
     }
 };
-
-main();

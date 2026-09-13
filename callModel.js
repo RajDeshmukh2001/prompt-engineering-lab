@@ -5,7 +5,7 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
-async function callModel({ user, system, temperature = 0.7, maxTokens = 1000 }) {
+async function callModel({ user, system, temperature, maxTokens }) {
     const response = await ai.interactions.create({
         model: "gemini-3.1-flash-lite",
         input: user,
